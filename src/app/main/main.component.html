@@ -1,0 +1,162 @@
+<div id="errorMsg" class="modal">
+    <div class="modal-content">
+      <br><p id = "errorTxt"> </p><br><br>
+      <button class="btnClose" (click)="closeError();">Close</button>
+    </div> 
+</div>
+<div class="mainLeft">
+    <h1 style="float: left; width: 95%">Employee List
+        <i class="fa fa-plus-circle" aria-hidden="true" style="color: green; font-size: 25px; margin-left:20px; float: right;" (click)="addEmployee()"></i>
+    </h1>
+    <table class="commonTbl">
+        <th width="10%">First Name</th>
+        <th width="10%">Last Name</th>
+        <th width="10%">Date of Birth</th>
+        <th width="10%">Gender</th>
+        <th width="10%">Hire Date</th>
+        <tr *ngFor="let emp of listEmployees" (click)="tableRowClicked(emp)" title="Click to see full details">
+            <td>{{emp.first_name}}</td>
+            <td>{{emp.last_name}}</td>
+            <td>{{emp.birth_date}}</td>
+            <td>{{emp.gender}}</td>
+            <td>{{emp.hire_date}}</td>
+        </tr>
+    </table>
+</div>
+<div class="mainRight" id="empDataLoader">
+    <h1>Employee Profile</h1>
+    <div class = "profileLeft">
+        Employee Name : <br><br>
+        Date Of Birth : <br><br>
+        Gender : <br><br>
+        Hire Date : <br><br>
+    </div>
+    <div class = "profileRight" id="profileData">
+        
+    </div>
+    <div id="EditBtn" (click)="EditEmp()" class="submit">Edit</div>
+    <div class="profileBot" >
+        <h2>Salary Details</h2>
+        <table class="commonTbl">
+            <th width="10%">Amount</th>
+            <th width="10%">From Date</th>
+            <th width="10%">To Date</th>
+            <tr *ngFor="let sal of salaryData" title="Click to see full details">
+                <td>{{sal.salary}}</td>
+                <td>{{sal.from_date}}</td>
+                <td>{{sal.to_date}}</td>
+            </tr>
+        </table>
+        <h2>Title Details</h2>
+        <table class="commonTbl">
+            <th width="10%">Title</th>
+            <th width="10%">From Date</th>
+            <th width="10%">To Date</th>
+            <tr *ngFor="let tit of titleData" title="Click to see full details">
+                <td>{{tit.title}}</td>
+                <td>{{tit.from_date}}</td>
+                <td>{{tit.to_date}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="mainRight" id="empEditLoader">
+    <h1>Employee Profile</h1>
+    <div class = "editEmp">
+        <div class="editEmpLeft">
+            <p>Employee Number</p>
+            <p>First Name</p>
+            <p>Last Name</p>
+            <p>Date of Birth</p>
+            <p>Gender</p>
+            <p>Hire Date</p> 
+        </div>
+        <div class="editEmpRight">
+            <form #userForm = "ngForm">
+                <br>
+                <input type="text" [(ngModel)] ="empData.emp_no"  name = "emp_no" id = "emp_no" [disabled] = "true"><br>
+   
+                <input type="text" [(ngModel)] ="empData.first_name"  name = "first_name" id = "first_name" #first_name="ngModel" pattern="[a-zA-Z\s]{2,20}" ><br>
+               <div *ngIf="first_name.errors && (first_name.valid || first_name.touched)">
+                   <div class = "normalError" *ngIf="first_name.errors.pattern">Please Enter Valid First Name</div>
+               </div>
+   
+                <input type="text" [(ngModel)] ="empData.last_name"  name = "last_name" id = "last_name" #last_name="ngModel" pattern="[a-zA-Z\s]{2,20}" ><br>
+               <div *ngIf="last_name.errors && (last_name.valid || last_name.touched)">
+                   <div class = "normalError" *ngIf="last_name.errors.pattern">Please Enter Valid Last Name</div>
+               </div>
+   
+                <input type="date" [(ngModel)] ="empData.birth_date"  name = "birth_date" id = "birth_date" ><br>
+   
+                <select  [(ngModel)] ="empData.gender"  name = "gender" id = "gender" >
+                       <option value = "MALE">Male</option>
+                       <option value = "FEMALE">Female</option>
+                   </select><br>
+   
+   
+               <input type="date" [(ngModel)] ="empData.hire_date"  name = "hire_date" id = "hire_date" ><br>
+               
+           </form>
+
+        </div>
+        <h2 style="float: left">Designation Details 
+            <i class="fa fa-plus-circle" id="addTitleBtn" aria-hidden="true" style="color: green; font-size: 25px; margin-left:20px" (click)="addTitleBtnclicked()"></i>
+        </h2>
+        <div style="float: left; width: 100%; background-color: rgb(226, 226, 226);">
+           
+            <div class="editEmpLeft">
+                <p>Title</p>
+                <p>From Date</p>
+                <p>To Date</p>
+            </div>
+            <div class="editEmpRight">
+                <form #titleForm = "ngForm">
+                    <br>
+                    <input type="text" [(ngModel)] ="titleDetails.title"  name = "title" id = "title" #title="ngModel" pattern="[a-zA-Z\s]{2,20}" [disabled]="disableStatus">
+                    <i class="fa fa-trash" aria-hidden="true" style="float:right;color: red; font-size: 24px; margin-left:10px" id="deleteTitleBtn" (click)="deletTitleBtnClicked()"></i><br>
+                   <div *ngIf="title.errors && (title.valid || title.touched)">
+                       <div class = "normalError" *ngIf="title.errors.pattern">Please Enter Valid Title</div>
+                   </div>
+       
+       
+                   <input type="date" [(ngModel)] ="titleDetails.from_date"  name = "from_date" id = "from_date" [disabled]="disableStatus"><br>
+       
+                   <input type="date" [(ngModel)] ="titleDetails.to_date"  name = "to_date" id = "to_date" [disabled]="disableStatus"><br>
+                   
+               </form>
+            </div>
+        </div>
+        
+        <h2 style="float: left">Salary Details
+            <i class="fa fa-plus-circle" id="addSalBtn" aria-hidden="true" style="color: green; font-size: 25px; margin-left:20px" (click)="addSalBtnclicked()"></i>
+        </h2>
+        <div style="background-color: rgb(226, 226, 226); float: left; width: 100%;">
+            <div class="editEmpLeft">
+                <p>Amount</p>
+                <p>From Date</p>
+                <p>To Date</p>
+            </div>
+            <div class="editEmpRight">
+                <form #salForm = "ngForm">
+                    <br>
+                    <input type="number" [(ngModel)] ="salDetails.salary"  name = "salary" id = "salary" #salary="ngModel" [disabled]="disableStatusSal">
+                    <i class="fa fa-trash" aria-hidden="true" style="float:right;color: red; font-size: 24px; margin-left:10px" id="deleteSalBtn" (click)="deletSalBtnClicked()"></i>
+                    <br>
+       
+       
+                   <input type="date" [(ngModel)] ="salDetails.from_date"  name = "from_date" id = "from_date" [disabled]="disableStatusSal"><br>
+       
+                   <input type="date" [(ngModel)] ="salDetails.to_date"  name = "to_date" id = "to_date" [disabled]="disableStatusSal"><br>
+       
+                   
+                   
+               </form>
+            </div>
+        </div>
+        <button (click)="cancelSave()" style="float: right" class="cancel">Cancel</button>
+        <button [disabled] = "userForm.form.invalid" (click)="addNewEmployee()" id="saveSubmit" style="float: right" class="submit">Save</button>
+        <button [disabled] = "userForm.form.invalid" (click)="updateEmployee()" id="updateSubmit" style="float: right" class="submit">Update</button>
+       
+    </div>
+    
+</div>
